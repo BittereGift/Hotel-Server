@@ -14,3 +14,18 @@ Hotel-Server
 - `hotel-point` 积分微服务
 - `hotel-room` 房间微服务，管理房间及其状态
 - `hotel-user` 用户微服务
+- `api-doc` 通过 `knife4j` 来快速生成接口文档
+
+
+
+## 二、使用的框架和工具包
+
+- `Spring Cloud Alibaba` 微服务框架
+- `Spring Boot` `Spring` 主体框架
+- `Mybatis` 用于和数据库之间进行数据沟通，简化 `JDBC` 开发
+- `druid` 数据库连接池
+- `lombok` 简化持久层对象开发，还用于日志记录
+- `nacos` 注册中心，用于服务的注册、发现和心跳监测
+- `knife4j` 用于通过注解快速生成接口文档
+- `hutool` 用于简化数据间的处理和转换
+- `fastjson2` 用于将对象快速转换为 `json` 对象
