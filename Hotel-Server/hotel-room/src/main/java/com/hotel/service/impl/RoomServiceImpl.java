@@ -53,32 +53,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> getByHotelId(Integer hotelId) {
-        return roomDao.getByHotelId(hotelId);
+    public List<Room> getByHotelAndTypeAndStatusAndPosition(Integer hotelId, Integer typeId, Integer status, String position) {
+        return roomDao.getByHotelAndTypeAndStatusAndPosition(hotelId, typeId, status, position);
     }
 
-    @Override
-    public List<Room> getByType(Integer typeId) {
-        return roomDao.getByType(typeId);
-    }
-
-    @Override
-    public List<Room> getByHotelAndType(Integer hotelId, Integer typeId) {
-        return roomDao.getByHotelAndType(hotelId, typeId);
-    }
-
-    @Override
-    public List<Room> getByHotelAndStatus(Integer hotelId, Integer status) {
-        return roomDao.getByHotelAndStatus(hotelId, status);
-    }
-
-    @Override
-    public List<Room> getByHotelAndTypeAndStatus(Integer hotelId, Integer typeId, Integer status) {
-        return roomDao.getByHotelAndTypeAndStatus(hotelId, typeId, status);
-    }
-
-    @Override
-    public Room getByHotelAndPosition(Integer hotelId, String position) {
-        return roomDao.getByHotelAndPosition(hotelId, position);
-    }
 }

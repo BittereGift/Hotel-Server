@@ -1,6 +1,9 @@
 package com.hotel.dao;
 
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.jdbc.SQL;
+
+import java.util.Map;
 
 /**
  * @author Bittere_Gift
@@ -37,20 +40,27 @@ public interface PointDao {
     Integer deleteUser(Integer userId);
 
     /**
-     * 添加用户，自动设置默认积分为0
-     *
-     * @param userId 用户id
-     */
-    @Insert("insert into point values (userId, 0)")
-    void addUser(Integer userId);
-
-    /**
      * 添加用户，并设置初始积分为提供值
      *
      * @param userId 用户id
      * @param point  初始积分
      */
-    @Insert("insert into point values (userId, point)")
-    void addUserWithStartPoint(Integer userId, Integer point);
+    @InsertProvider(value = PointSqlProvider.class, method = "addUser")
+    void addUserWithStartPoint(@Param("userId") Integer userId, @Param("point") Integer point);
+
+    class PointSqlProvider {
+        public String addUser(Map<String,Object> para) {
+            return new SQL() {{
+                Integer userId = (Integer) para.get("userId");
+                INSERT_INTO("point");
+                VALUES("user_id", "#{userId}");
+                if (para.get("point") != null) {
+                    VALUES("point", "#{point}");
+                } else {
+                    VALUES("point", "0");
+                }
+            }}.toString();
+        }
+    }
 
 }

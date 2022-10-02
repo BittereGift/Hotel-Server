@@ -1,5 +1,5 @@
 server:
-  port: 8071
+  port: 8031
 
 spring:
   application:
@@ -10,3 +10,7 @@ spring:
     username: root
     password: hhs123456789
     type: com.alibaba.druid.pool.DruidDataSource
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848

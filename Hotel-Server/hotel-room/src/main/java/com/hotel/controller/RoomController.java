@@ -1,7 +1,9 @@
 package com.hotel.controller;
 
 import com.hotel.domain.Room;
+import com.hotel.domain.User;
 import com.hotel.service.RoomService;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/rooms")
+@Api(tags = "Room")
 public class RoomController {
 
     @Autowired
@@ -25,6 +28,12 @@ public class RoomController {
      * @param room 房间对象
      * @return 是否成功
      */
+    @ApiOperation(value = "addRoom", notes = "添加房间")
+    @ApiImplicitParam(name = "room", required = true, paramType = "body")
+    @ApiResponses({
+            @ApiResponse(code = 10001, message = "", response = Boolean.class),
+            @ApiResponse(code = 10000, message = "房间添加失败，请重试", response = Boolean.class)
+    })
     @PostMapping
     public Result addRoom(@RequestBody Room room) {
         boolean flag = roomService.addRoom(room);
@@ -39,6 +48,12 @@ public class RoomController {
      * @param id id
      * @return 是否成功
      */
+    @ApiOperation(value = "deleteRoomById", notes = "删除房间")
+    @ApiImplicitParam(name = "id", required = true, paramType = "path")
+    @ApiResponses({
+            @ApiResponse(code = 10021, message = "", response = Boolean.class),
+            @ApiResponse(code = 10020, message = "删除失败，请重试", response = Boolean.class)
+    })
     @DeleteMapping("/{id}")
     public Result deleteRoomById(@PathVariable Integer id) {
         boolean flag = roomService.deleteById(id);
@@ -54,6 +69,12 @@ public class RoomController {
      * @return 是否成功
      */
     @PutMapping
+    @ApiOperation(value = "updateRoom", notes = "更改房间信息")
+    @ApiImplicitParam(name = "room", required = true, paramType = "body")
+    @ApiResponses({
+            @ApiResponse(code = 10031, message = "", response = Boolean.class),
+            @ApiResponse(code = 10030, message = "更新失败，请重试", response = Boolean.class)
+    })
     public Result updateRoom(@RequestBody Room room) {
         boolean flag = roomService.update(room);
         Integer code = flag ? Code.PUT_OK : Code.PUT_FAIL;
@@ -68,6 +89,15 @@ public class RoomController {
      * @param status 房间的状态
      * @return 是否成功
      */
+    @ApiOperation(value = "updateStatus", notes = "更改房间状态")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", required = true, paramType = "query"),
+            @ApiImplicitParam(name = "status", required = true, paramType = "query")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 10031, message = "", response = Boolean.class),
+            @ApiResponse(code = 10030, message = "更新失败，请重试", response = Boolean.class)
+    })
     @PutMapping("/us")
     public Result updateStatus(@RequestParam("id") Integer id, @RequestParam("status") Integer status) {
         boolean flag = roomService.updateStatus(id, status);
@@ -82,6 +112,12 @@ public class RoomController {
      * @param id id
      * @return 查询到的对象信息实例
      */
+    @ApiOperation(value = "getRoomById", notes = "查询房间信息")
+    @ApiImplicitParam(name = "id", required = true, paramType = "path")
+    @ApiResponses({
+            @ApiResponse(code = 10011, message = "", response = Room.class),
+            @ApiResponse(code = 10010, message = "房间查询失败，请重试")
+    })
     @GetMapping("/{id}")
     public Result getRoomById(@PathVariable Integer id) {
         Room room = roomService.getById(id);
@@ -96,6 +132,11 @@ public class RoomController {
      *
      * @return 所用实例的 List 集合
      */
+    @ApiOperation(value = "getAllRooms", notes = "查询所有房间信息")
+    @ApiResponses({
+            @ApiResponse(code = 10011, message = "", response = List.class),
+            @ApiResponse(code = 10010, message = "房间查询失败，请重试")
+    })
     @GetMapping
     public Result getAllRooms() {
         List<Room> rooms = roomService.getAll();
@@ -106,102 +147,29 @@ public class RoomController {
     }
 
     /**
-     * 查询所有在 hotelId 酒店下的房间
-     *
-     * @param id 酒店 id
-     * @return 所有在 hotelId 酒店下的房间
-     */
-    @GetMapping("/h")
-    public Result getRoomsByHotelId(@RequestParam("hotelId") Integer id) {
-        List<Room> rooms = roomService.getByHotelId(id);
-        boolean flag = rooms != null && rooms.size() > 0;
-        Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
-        String msg = flag ? "" : "房间查询失败，请重试";
-        return new Result(rooms, code, msg);
-    }
-
-    /**
-     * 查询所有 typeId 类型的房间
-     *
-     * @param id 类型 id
-     * @return 所有 typeId 类型的房间
-     */
-    @GetMapping("/t")
-    public Result getRoomsByType(@RequestParam("typeId") Integer id) {
-        List<Room> rooms = roomService.getByType(id);
-        boolean flag = rooms != null && rooms.size() > 0;
-        Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
-        String msg = flag ? "" : "房间查询失败，请重试";
-        return new Result(rooms, code, msg);
-    }
-
-    /**
-     * 查询在 hotelId 酒店中 typeId类型的房间
-     *
-     * @param hotelId 酒店 id
-     * @param typeId  类型 id
-     * @return 在 hotelId 酒店中 typeId类型的房间
-     */
-    @GetMapping("/ht")
-    public Result getRoomsByHotelAndType(@RequestParam("hotelId") Integer hotelId,
-                                         @RequestParam("typeId") Integer typeId) {
-        List<Room> rooms = roomService.getByHotelAndType(hotelId, typeId);
-        boolean flag = rooms != null && rooms.size() > 0;
-        Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
-        String msg = flag ? "" : "房间查询失败，请重试";
-        return new Result(rooms, code, msg);
-    }
-
-    /**
-     * 查询在 hotelId 酒店中状态为 status 的房间
-     *
-     * @param hotelId 酒店 id
-     * @param status  状态
-     * @return 在 hotelId 酒店中状态为 status 的房间
-     */
-    @GetMapping("/hs")
-    public Result getRoomsByHotelAndStatus(@RequestParam("hotelId") Integer hotelId,
-                                           @RequestParam("status") Integer status) {
-        List<Room> rooms = roomService.getByHotelAndStatus(hotelId, status);
-        boolean flag = rooms != null && rooms.size() > 0;
-        Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
-        String msg = flag ? "" : "房间查询失败，请重试";
-        return new Result(rooms, code, msg);
-    }
-
-    /**
-     * 查询在 hotelId 酒店中 typeId类型的 状态为 status 的房间
-     *
-     * @param hotelId 酒店 id
-     * @param typeId  类型 id
-     * @param status  状态
-     * @return 在 hotelId 酒店中 typeId类型的 状态为 status 的房间
-     */
-    @GetMapping("/hts")
-    public Result getRoomsByHotelAndTypeAndStatus(@RequestParam("hotelId") Integer hotelId,
-                                                  @RequestParam("typeId") Integer typeId,
-                                                  @RequestParam("status") Integer status) {
-        List<Room> rooms = roomService.getByHotelAndTypeAndStatus(hotelId, typeId, status);
-        boolean flag = rooms != null && rooms.size() > 0;
-        Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
-        String msg = flag ? "" : "房间查询失败，请重试";
-        return new Result(rooms, code, msg);
-    }
-
-    /**
-     * 查询在 hotelId 酒店中 position 房间
+     * 查询在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间，不输入条件则为不限制该条件
      *
      * @param hotelId  酒店 id
+     * @param typeId   类型 id
+     * @param status   状态
      * @param position 房间位置
-     * @return 在 hotelId 酒店中 position 房间
+     * @return 在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间
      */
-    @GetMapping("/hp")
-    public Result getRoomByHotelAndPosition(@RequestParam("hotelId") Integer hotelId,
-                                            @RequestParam("position") String position) {
-        Room room = roomService.getByHotelAndPosition(hotelId, position);
-        boolean flag = room != null;
+    @ApiOperation(value = "getRoomsByHotelAndTypeAndStatusAndPosition",
+            notes = "查询在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间，不输入条件则为不限制该条件")
+    @ApiResponses({
+            @ApiResponse(code = 10011, message = "", response = List.class),
+            @ApiResponse(code = 10010, message = "房间查询失败，请重试")
+    })
+    @GetMapping("/s")
+    public Result getRoomsByHotelAndTypeAndStatusAndPosition(@RequestParam(value = "hotelId", required = false) Integer hotelId,
+                                                  @RequestParam(value = "typeId", required = false) Integer typeId,
+                                                  @RequestParam(value = "status", required = false) Integer status,
+                                                  @RequestParam(value = "position", required = false) String position) {
+        List<Room> rooms = roomService.getByHotelAndTypeAndStatusAndPosition(hotelId, typeId, status, position);
+        boolean flag = rooms != null && rooms.size() > 0;
         Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
         String msg = flag ? "" : "房间查询失败，请重试";
-        return new Result(room, code, msg);
+        return new Result(rooms, code, msg);
     }
 }

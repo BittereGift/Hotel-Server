@@ -21,7 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
 public class Knife4jConfiguration {
-    @Bean(value = "userApi")
+    @Bean(value = "roomApi")
     @Order(value = 1)
     public Docket groupRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -34,8 +34,8 @@ public class Knife4jConfiguration {
 
     private ApiInfo groupApiInfo() {
         return new ApiInfoBuilder()
-                .title("Service-User")
-                .description("Service-User")
+                .title("Service-Room")
+                .description("Service-Room")
                 .termsOfServiceUrl("")
                 .contact(getContact())
                 .version("1.0")

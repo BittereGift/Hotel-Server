@@ -53,49 +53,13 @@ public interface RoomService {
     List<Room> getAll();
 
     /**
-     * 查询所有在 hotelId 酒店下的房间
-     * @param hotelId 酒店 id
-     * @return 所有在 hotelId 酒店下的房间
-     */
-    List<Room> getByHotelId(Integer hotelId);
-
-    /**
-     * 查询所有 typeId 类型的房间
-     * @param typeId 类型 id
-     * @return 所有 typeId 类型的房间
-     */
-    List<Room> getByType(Integer typeId);
-
-    /**
-     * 查询在 hotelId 酒店中 typeId类型的房间
-     * @param hotelId 酒店 id
-     * @param typeId 类型 id
-     * @return 在 hotelId 酒店中 typeId类型的房间
-     */
-    List<Room> getByHotelAndType(Integer hotelId, Integer typeId);
-
-    /**
-     * 查询在 hotelId 酒店中状态为 status 的房间
-     * @param hotelId 酒店 id
-     * @param status 状态
-     * @return 在 hotelId 酒店中状态为 status 的房间
-     */
-    List<Room> getByHotelAndStatus(Integer hotelId, Integer status);
-
-    /**
-     * 查询在 hotelId 酒店中 typeId类型的 状态为 status 的房间
-     * @param hotelId 酒店 id
-     * @param typeId 类型 id
-     * @param status 状态
-     * @return 在 hotelId 酒店中 typeId类型的 状态为 status 的房间
-     */
-    List<Room> getByHotelAndTypeAndStatus(Integer hotelId, Integer typeId, Integer status);
-
-    /**
-     * 查询在 hotelId 酒店中 position 房间
-     * @param hotelId 酒店 id
+     * 查询在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间，不输入条件则为不限制该条件
+     *
+     * @param hotelId  酒店 id
+     * @param typeId   类型 id
+     * @param status   状态
      * @param position 房间位置
-     * @return 在 hotelId 酒店中 position 房间
+     * @return 在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间
      */
-    Room getByHotelAndPosition(Integer hotelId, String position);
+    List<Room> getByHotelAndTypeAndStatusAndPosition(Integer hotelId, Integer typeId, Integer status, String position);
 }

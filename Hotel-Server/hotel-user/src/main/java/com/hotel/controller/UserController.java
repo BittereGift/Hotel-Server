@@ -2,6 +2,7 @@ package com.hotel.controller;
 
 
 import com.hotel.domain.User;
+import com.hotel.service.PointService;
 import com.hotel.service.UserService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PointService pointService;
+
     @ApiOperation(value = "addUser", notes = "添加用户")
     @ApiImplicitParam(name = "user", required = true, paramType = "body")
     @ApiResponses({
@@ -31,9 +35,15 @@ public class UserController {
     @PostMapping
     public Result addUser(@RequestBody User user) {
         boolean flag = userService.addUser(user);
-        Integer code = flag ? Code.POST_OK : Code.POST_FAIL;
-        String msg = flag ? "" : "用户新建失败，请重试";
-        return new Result(flag, code, msg);
+        boolean flag2 = true;
+        if (flag) {
+            Result result = pointService.addUser(user.getId(), null);
+            flag2 = (boolean) result.getData();
+        }
+        boolean data = flag && flag2;
+        Integer code = data ? Code.POST_OK : Code.POST_FAIL;
+        String msg = data ? "" : "用户新建失败，请重试";
+        return new Result(data, code, msg);
     }
 
     @ApiOperation(value = "deleteUserById", notes = "删除用户")
@@ -45,6 +55,9 @@ public class UserController {
     @DeleteMapping("/{id}")
     public Result deleteUserById(@PathVariable("id") Integer id) {
         boolean flag = userService.deleteUserById(id);
+        if (flag) {
+            pointService.deleteUser(id);
+        }
         Integer code = flag ? Code.DELETE_OK : Code.DELETE_FAIL;
         String msg = flag ? "" : "用户删除失败，请重试";
         return new Result(flag, code, msg);
@@ -76,6 +89,9 @@ public class UserController {
         boolean flag = user != null;
         Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
         String msg = flag ? "" : "用户查询失败，请重试";
+        if (flag) {
+            user.setPoint((Integer) pointService.getPoint(id).getData());
+        }
         return new Result(user, code, msg);
     }
 

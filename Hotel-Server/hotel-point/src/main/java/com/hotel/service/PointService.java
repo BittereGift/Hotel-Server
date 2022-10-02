@@ -31,14 +31,6 @@ public interface PointService {
     boolean deleteUser(Integer userId);
 
     /**
-     * 添加用户，自动设置默认积分为0
-     *
-     * @param userId 用户id
-     * @return 添加是否成功
-     */
-    boolean addUser(Integer userId);
-
-    /**
      * 添加用户，并设置初始积分为提供值
      *
      * @param userId 用户id

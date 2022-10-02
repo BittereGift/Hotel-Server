@@ -13,4 +13,16 @@ knife4j:
       - name: service-user
         serviceName: service-user
         location: /v2/api-docs?group=default
-        servicePath: /order/prod
+      - name: service-room
+        service-name: service-room
+        location: /v2/api-docs?group=default
+      - name: service-point
+        service-name: service-point
+        location: /v2/api-docs?group=default
+spring:
+  application:
+    name: service-doc
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848

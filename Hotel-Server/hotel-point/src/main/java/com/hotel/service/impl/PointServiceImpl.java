@@ -30,20 +30,11 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public boolean addUser(Integer userId) {
-        try {
-            pointDao.addUser(userId);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public boolean addUserWithStartPoint(Integer userId, Integer point) {
         try {
             pointDao.addUserWithStartPoint(userId, point);
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
