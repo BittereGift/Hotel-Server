@@ -12,7 +12,7 @@ public class Code {
     public static final Integer PUT_OK = 10031;
 
     public static final Integer POST_FAIL = 10000;
-    public static final Integer GET_FAIL = 10011;
-    public static final Integer DELETE_FAIL = 10021;
-    public static final Integer PUT_FAIL = 10031;
+    public static final Integer GET_FAIL = 10010;
+    public static final Integer DELETE_FAIL = 10020;
+    public static final Integer PUT_FAIL = 10030;
 }

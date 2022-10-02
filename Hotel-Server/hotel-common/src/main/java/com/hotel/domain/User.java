@@ -20,4 +20,8 @@ public class User {
     private String tele;
     private String qq;
     private String sex;
+    /**
+     * 用户积分
+     */
+    private Integer point;
 }

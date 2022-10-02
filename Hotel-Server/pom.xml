@@ -19,6 +19,7 @@
         <module>hotel-point</module>
         <module>hotel-user</module>
         <module>hotel-room</module>
+        <module>api-doc</module>
     </modules>
 
     <parent>

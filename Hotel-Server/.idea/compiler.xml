@@ -17,6 +17,7 @@
         <module name="hotel-hotel" />
         <module name="hotel-msg" />
         <module name="hotel-manager" />
+        <module name="api-doc" />
         <module name="hotel-room" />
       </profile>
     </annotationProcessing>
@@ -24,6 +25,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Hotel-Server" options="" />
+      <module name="api-doc" options="-parameters" />
       <module name="hotel-collect" options="-parameters" />
       <module name="hotel-common" options="-parameters" />
       <module name="hotel-eval" options="-parameters" />
