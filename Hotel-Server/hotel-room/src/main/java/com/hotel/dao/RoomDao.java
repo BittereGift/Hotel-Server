@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.mapping.FetchType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,15 @@ public interface RoomDao {
      */
     @Delete("delete from room where id = #{id}")
     Integer deleteById(Integer id);
+
+    /**
+     * 删除某个酒店所有的房间
+     *
+     * @param hotelId 酒店 id
+     * @return 删除的条数
+     */
+    @Delete("delete from room where hotel_id = #{hotelId}")
+    Integer deleteByHotelId(Integer hotelId);
 
     /**
      * 更改信息
@@ -78,6 +88,16 @@ public interface RoomDao {
     List<Room> getAll();
 
     /**
+     * 通过 id 数组获取 room 集合
+     *
+     * @param ids ids
+     * @return rooms
+     */
+    @SelectProvider(value = RoomSqlProvider.class, method = "selectRoomsByIds")
+    @ResultMap("roomMap")
+    List<Room> getByIds(List<Integer> ids);
+
+    /**
      * 查询在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间，不输入条件则为不限制该条件
      *
      * @param hotelId  酒店 id
@@ -86,28 +106,38 @@ public interface RoomDao {
      * @param position 房间位置
      * @return 在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间
      */
-    @SelectProvider(type = HotelSqlProvider.class, method = "selectRoom")
+    @SelectProvider(type = RoomSqlProvider.class, method = "selectRoom")
     @ResultMap("roomMap")
     List<Room> getByHotelAndTypeAndStatusAndPosition(Integer hotelId, Integer typeId, Integer status, String position);
 
-    class HotelSqlProvider {
+    class RoomSqlProvider {
         public String selectRoom(Integer hotelId, Integer typeId, Integer status, String position) {
             return new SQL() {{
-                    SELECT("*");
-                    FROM("room");
-                    if (hotelId != null) {
-                        WHERE("hotel_id = #{hotelId}");
-                    }
-                    if (typeId != null) {
-                        WHERE("type_id = #{typeId}");
-                    }
-                    if (status != null) {
-                        WHERE("status = #{status}");
-                    }
-                    if (position != null) {
-                        WHERE("position = #{position}");
-                    }
-                }}.toString();
+                SELECT("*");
+                FROM("room");
+                if (hotelId != null) {
+                    WHERE("hotel_id = #{hotelId}");
+                }
+                if (typeId != null) {
+                    WHERE("type_id = #{typeId}");
+                }
+                if (status != null) {
+                    WHERE("status = #{status}");
+                }
+                if (position != null) {
+                    WHERE("position = #{position}");
+                }
+            }}.toString();
+        }
+
+        public String selectRoomsByIds(List<Integer> ids) {
+            return new SQL() {{
+                List<String> list = new ArrayList<>();
+                ids.forEach(id -> list.add(id.toString()));
+                SELECT("*");
+                FROM("room");
+                WHERE("id in (" + String.join(",", list) + ")");
+            }}.toString();
         }
     }
 }

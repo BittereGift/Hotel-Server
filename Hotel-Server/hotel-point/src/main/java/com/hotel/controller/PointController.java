@@ -25,10 +25,9 @@ public class PointController {
      * @param userId 用户 id
      * @return 用户积分
      */
-    @ApiOperation(value = "getPointById", notes = "查询用户积分")
-    @ApiImplicitParam(name = "id", required = true, paramType = "path")
+    @ApiOperation(value = "getPointById", notes = "查询用户积分", response = Integer.class)
     @ApiResponses({
-            @ApiResponse(code = 10011, message = "", response = Integer.class),
+            @ApiResponse(code = 10011, message = ""),
             @ApiResponse(code = 10010, message = "积分查询失败，请重试")
     })
     @GetMapping("/{userId}")
@@ -47,10 +46,10 @@ public class PointController {
      * @param newPoint 更新后的用户积分
      * @return 更新成功返回true，否则返回false
      */
-    @ApiOperation(value = "updatePoint", notes = "更改积分")
+    @ApiOperation(value = "updatePoint", notes = "更改积分", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10031, message = "", response = Boolean.class),
-            @ApiResponse(code = 10030, message = "更新失败，请重试", response = Boolean.class)
+            @ApiResponse(code = 10031, message = ""),
+            @ApiResponse(code = 10030, message = "更新失败，请重试")
     })
     @PutMapping
     public Result updatePoint(@RequestParam("userId") Integer userId,
@@ -67,10 +66,10 @@ public class PointController {
      * @param userId 用户 id
      * @return 删除成功返回true，否则返回false
      */
-    @ApiOperation(value = "deleteUser", notes = "删除用户")
+    @ApiOperation(value = "deleteUser", notes = "删除用户", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10021, message = "", response = Boolean.class),
-            @ApiResponse(code = 10020, message = "删除失败，请重试", response = Boolean.class)
+            @ApiResponse(code = 10021, message = ""),
+            @ApiResponse(code = 10020, message = "删除失败，请重试")
     })
     @DeleteMapping("/{userId}")
     public Result deleteUser(@PathVariable Integer userId) {
@@ -87,10 +86,10 @@ public class PointController {
      * @param point  初始积分
      * @return 添加是否成功
      */
-    @ApiOperation(value = "addUserWithStartPoint", notes = "添加用户，并设置初始积分，如果不设置值，默认为0")
+    @ApiOperation(value = "addUserWithStartPoint", notes = "添加用户，并设置初始积分，如果不设置值，默认为0", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10001, message = "", response = Boolean.class),
-            @ApiResponse(code = 10000, message = "新建失败，请重试", response = Boolean.class)
+            @ApiResponse(code = 10001, message = ""),
+            @ApiResponse(code = 10000, message = "新建失败，请重试")
     })
     @PostMapping
     public Result addUserWithStartPoint(@RequestParam("userId") Integer userId,

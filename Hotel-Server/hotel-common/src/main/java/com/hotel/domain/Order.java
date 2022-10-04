@@ -18,4 +18,8 @@ public class Order {
     private Date endTime;
     private User user;
     private Room room;
+    /**
+     * 订单的状态，有未付款，已付款，已取消，已完成，已评价
+     */
+    private String status;
 }

@@ -13,7 +13,7 @@ import lombok.ToString;
 public class Evaluation {
     private Order order;
     /**
-     * 评分
+     * 评分,1-5
      */
     private Integer score;
     /**

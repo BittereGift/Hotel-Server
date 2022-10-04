@@ -1,8 +1,6 @@
 package com.hotel.service;
 
 import com.hotel.domain.Room;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -23,6 +21,13 @@ public interface RoomService {
      * @return 是否成功
      */
     boolean deleteById(Integer id);
+
+    /**
+     * 删除某个酒店所有的房间
+     * @param hotelId 酒店 id
+     * @return 是否成功
+     */
+    boolean deleteByHotel(Integer hotelId);
 
     /**
      * 更改信息
@@ -51,6 +56,14 @@ public interface RoomService {
      * @return 所用实例的 List 集合
      */
     List<Room> getAll();
+
+    /**
+     * 通过 id 数组获取 room 集合
+     *
+     * @param ids ids
+     * @return rooms
+     */
+    List<Room> getByIds(List<Integer> ids);
 
     /**
      * 查询在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间，不输入条件则为不限制该条件

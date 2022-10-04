@@ -19,6 +19,21 @@ knife4j:
       - name: service-point
         service-name: service-point
         location: /v2/api-docs?group=default
+      - name: service-manager
+        service-name: service-manager
+        location: /v2/api-docs?group=default
+      - name: service-hotel
+        service-name: service-hotel
+        location: /v2/api-docs?group=default
+      - name: service-eval
+        service-name: service-eval
+        location: /v2/api-docs?group=default
+      - name: service-collect
+        service-name: service-collect
+        location: /v2/api-docs?group=default
+      - name: service-order
+        service-name: service-order
+        location: /v2/api-docs?group=default
 spring:
   application:
     name: service-doc

@@ -26,11 +26,10 @@ public class UserController {
     @Autowired
     private PointService pointService;
 
-    @ApiOperation(value = "addUser", notes = "添加用户")
-    @ApiImplicitParam(name = "user", required = true, paramType = "body")
+    @ApiOperation(value = "addUser", notes = "添加用户", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10001, message = "", response = Boolean.class),
-            @ApiResponse(code = 10000, message = "新建失败，请重试", response = Boolean.class)
+            @ApiResponse(code = 10001, message = ""),
+            @ApiResponse(code = 10000, message = "新建失败，请重试")
     })
     @PostMapping
     public Result addUser(@RequestBody User user) {
@@ -46,11 +45,10 @@ public class UserController {
         return new Result(data, code, msg);
     }
 
-    @ApiOperation(value = "deleteUserById", notes = "删除用户")
-    @ApiImplicitParam(name = "id", required = true, paramType = "path")
+    @ApiOperation(value = "deleteUserById", notes = "删除用户", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10021, message = "", response = Boolean.class),
-            @ApiResponse(code = 10020, message = "删除失败，请重试", response = Boolean.class)
+            @ApiResponse(code = 10021, message = ""),
+            @ApiResponse(code = 10020, message = "删除失败，请重试")
     })
     @DeleteMapping("/{id}")
     public Result deleteUserById(@PathVariable("id") Integer id) {
@@ -63,11 +61,10 @@ public class UserController {
         return new Result(flag, code, msg);
     }
 
-    @ApiOperation(value = "updateUser", notes = "更改用户信息")
-    @ApiImplicitParam(name = "user", required = true, paramType = "body")
+    @ApiOperation(value = "updateUser", notes = "更改用户信息", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10031, message = "", response = Boolean.class),
-            @ApiResponse(code = 10030, message = "更新失败，请重试", response = Boolean.class)
+            @ApiResponse(code = 10031, message = ""),
+            @ApiResponse(code = 10030, message = "更新失败，请重试")
     })
     @PutMapping
     public Result updateUser(@RequestBody User user) {
@@ -77,10 +74,9 @@ public class UserController {
         return new Result(flag, code, msg);
     }
 
-    @ApiOperation(value = "getUserById", notes = "查询用户信息")
-    @ApiImplicitParam(name = "id", required = true, paramType = "path")
+    @ApiOperation(value = "getUserById", notes = "查询用户信息", response = User.class)
     @ApiResponses({
-            @ApiResponse(code = 10011, message = "", response = User.class),
+            @ApiResponse(code = 10011, message = ""),
             @ApiResponse(code = 10010, message = "用户查询失败，请重试")
     })
     @GetMapping("/{id}")
@@ -95,9 +91,9 @@ public class UserController {
         return new Result(user, code, msg);
     }
 
-    @ApiOperation(value = "getAllUsers", notes = "查询所有用户的信息")
+    @ApiOperation(value = "getAllUsers", notes = "查询所有用户的信息", response = User.class, responseContainer = "List")
     @ApiResponses({
-            @ApiResponse(code = 10011, message = "", response = List.class),
+            @ApiResponse(code = 10011, message = ""),
             @ApiResponse(code = 10010, message = "用户查询失败，请重试")
     })
     @GetMapping
@@ -110,15 +106,34 @@ public class UserController {
     }
 
     /**
+     * 通过 ids 获取用户列表
+     * @param ids 用户 id
+     * @return 用户列表
+     */
+    @ApiOperation(value = "getUsersByIds", notes = "通过 ids 获取用户列表",
+            response = User.class, responseContainer = "List")
+    @ApiResponses({
+            @ApiResponse(code = 10011, message = ""),
+            @ApiResponse(code = 10010, message = "")
+    })
+    @GetMapping("/ids")
+    public Result getUsersByIds(@RequestParam("ids") List<Integer> ids) {
+        List<User> userList = userService.getByIds(ids);
+        boolean flag = userList != null;
+        Integer code = flag? Code.GET_OK : Code.GET_FAIL;
+        return new Result(userList, code);
+    }
+
+    /**
      * 验证 name 字段是否重复，如果重复，返回false
      *
      * @param name 验证字段
      * @return 如果重复，返回false
      */
-    @ApiOperation(value = "nameCheck", notes = "验证 name 字段是否重复")
+    @ApiOperation(value = "nameCheck", notes = "验证 name 字段是否重复", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10011, message = "", response = Boolean.class),
-            @ApiResponse(code = 10010, message = "用户名已被注册", response = Boolean.class)
+            @ApiResponse(code = 10011, message = ""),
+            @ApiResponse(code = 10010, message = "用户名已被注册")
     })
     @GetMapping("/name_check")
     public Result nameCheck(@RequestParam("name") String name) {
@@ -135,10 +150,10 @@ public class UserController {
      * @param email 验证字段
      * @return 如果重复，返回false
      */
-    @ApiOperation(value = "emailCheck", notes = "验证 email 字段是否重复")
+    @ApiOperation(value = "emailCheck", notes = "验证 email 字段是否重复", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10011, message = "", response = Boolean.class),
-            @ApiResponse(code = 10010, message = "邮箱已被注册", response = Boolean.class)
+            @ApiResponse(code = 10011, message = ""),
+            @ApiResponse(code = 10010, message = "邮箱已被注册")
     })
     @GetMapping("/email_check")
     public Result emailCheck(@RequestParam("email") String email) {
@@ -155,10 +170,10 @@ public class UserController {
      * @param tele 验证字段
      * @return 如果重复，返回false
      */
-    @ApiOperation(value = "teleCheck", notes = "验证 tele 字段是否重复")
+    @ApiOperation(value = "teleCheck", notes = "验证 tele 字段是否重复", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10011, message = "", response = Boolean.class),
-            @ApiResponse(code = 10010, message = "电话已被注册", response = Boolean.class)
+            @ApiResponse(code = 10011, message = ""),
+            @ApiResponse(code = 10010, message = "电话已被注册")
     })
     @GetMapping("/tele_check")
     public Result teleCheck(@RequestParam("tele") String tele) {
@@ -175,10 +190,10 @@ public class UserController {
      * @param qq 验证字段
      * @return 如果重复，返回false
      */
-    @ApiOperation(value = "qqCheck", notes = "验证 qq 字段是否重复")
+    @ApiOperation(value = "qqCheck", notes = "验证 qq 字段是否重复", response = Boolean.class)
     @ApiResponses({
-            @ApiResponse(code = 10011, message = "", response = Boolean.class),
-            @ApiResponse(code = 10010, message = "QQ已被注册", response = Boolean.class)
+            @ApiResponse(code = 10011, message = ""),
+            @ApiResponse(code = 10010, message = "QQ已被注册")
     })
     @GetMapping("/qq_check")
     public Result qqCheck(@RequestParam("qq") String qq) {
@@ -195,9 +210,9 @@ public class UserController {
      * @param password 密码
      * @return 如果登录信息匹配则返回登录用户的对象
      */
-    @ApiOperation(value = "loginCheck", notes = "验证登录，如果登录信息匹配则返回登录用户的对象")
+    @ApiOperation(value = "loginCheck", notes = "验证登录，如果登录信息匹配则返回登录用户的对象", response = User.class)
     @ApiResponses({
-            @ApiResponse(code = 10011, message = "登陆成功", response = User.class),
+            @ApiResponse(code = 10011, message = "登陆成功"),
             @ApiResponse(code = 10010, message = "登录失败，请重试")
     })
     @GetMapping("/login")

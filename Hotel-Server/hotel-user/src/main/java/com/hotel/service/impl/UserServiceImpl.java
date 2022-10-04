@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getByIds(List<Integer> ids) {
+        return userDao.getByIds(ids);
+    }
+
+    @Override
     public Integer hasSameNameUser(String name) {
         log.info("User hasSameNameUser: name = {}", name);
         return userDao.countSameNameUser(name);

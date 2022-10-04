@@ -16,7 +16,8 @@ public interface ManagerDao {
      * @param manager 管理员
      */
     @Insert("insert into manager_manager values (null, #{name}, #{password}, #{qq}," +
-            " #{hotel.id}, #{hotel.name}, #{hotel.address}, #{hotel.description})")
+            " #{hotel.id})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     void add(Manager manager);
 
     /**
@@ -33,7 +34,7 @@ public interface ManagerDao {
      * @return 更新条数
      */
     @Update("update manager_manager set name = #{name}, password = #{password}, qq = #{qq}, " +
-            "hotel_id = #{hotel.id}, hotel_name = #{hotel.name}, ")
+            "hotel_id = #{hotel.id} where id = #{id}")
     Integer update(Manager manager);
 
     /**
@@ -42,6 +43,13 @@ public interface ManagerDao {
      * @return 管理员
      */
     @Select("select * from manager_manager where id = #{id}")
+    @Results(id = "managerMap", value = {
+            @Result(property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "qq", column = "qq"),
+            @Result(property = "hotel.id", column = "hotel_id")
+    })
     Manager getById(Integer id);
 
     /**
@@ -49,6 +57,7 @@ public interface ManagerDao {
      * @return List of manager
      */
     @Select("select * from manager_manager")
+    @ResultMap("managerMap")
     List<Manager> getAll();
 
     /**
@@ -58,5 +67,6 @@ public interface ManagerDao {
      * @return 登陆对象
      */
     @Select("select * from manager_manager where name = #{name} and password = #{password}")
+    @ResultMap("managerMap")
     Manager loginCheck(String name, String password);
 }

@@ -33,6 +33,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public boolean deleteByHotel(Integer hotelId) {
+        return roomDao.deleteByHotelId(hotelId) != 0;
+    }
+
+    @Override
     public boolean update(Room room) {
         return roomDao.update(room) == 1;
     }
@@ -50,6 +55,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> getAll() {
         return roomDao.getAll();
+    }
+
+    @Override
+    public List<Room> getByIds(List<Integer> ids) {
+        return roomDao.getByIds(ids);
     }
 
     @Override

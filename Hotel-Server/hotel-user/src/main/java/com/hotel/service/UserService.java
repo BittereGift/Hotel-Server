@@ -43,6 +43,13 @@ public interface UserService {
     List<User> getAll();
 
     /**
+     * 通过 ids 获取用户列表
+     * @param ids 用户 id
+     * @return 用户列表
+     */
+    List<User> getByIds(List<Integer> ids);
+
+    /**
      * 判断是否存在和提供的 name 相同的已存在用户
      * @param name 提供的 name
      * @return 如果存在，返回 true，否则返回 false
