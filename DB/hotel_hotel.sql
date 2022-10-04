@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 02/10/2022 15:40:44
+ Date: 05/10/2022 01:20:29
 */
 
 SET NAMES utf8mb4;
@@ -28,11 +28,13 @@ CREATE TABLE `hotel_hotel`  (
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of hotel_hotel
 -- ----------------------------
 INSERT INTO `hotel_hotel` VALUES (1, '南方科技大学酒店', '深圳市南山区桃源街道1088号', '非常好');
+INSERT INTO `hotel_hotel` VALUES (2, '1', '1', '1');
+INSERT INTO `hotel_hotel` VALUES (3, '123', '重庆市大渡口区', '不太行');
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 02/10/2022 15:39:38
+ Date: 05/10/2022 01:20:17
 */
 
 SET NAMES utf8mb4;
@@ -23,8 +23,17 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `collect`;
 CREATE TABLE `collect`  (
   `user_id` int NOT NULL,
-  `room_id` int NULL DEFAULT NULL,
-  PRIMARY KEY (`user_id`) USING BTREE
+  `room_id` int NOT NULL,
+  PRIMARY KEY (`user_id`, `room_id`) USING BTREE,
+  UNIQUE INDEX `user_id`(`user_id` ASC, `room_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of collect
+-- ----------------------------
+INSERT INTO `collect` VALUES (1, 1);
+INSERT INTO `collect` VALUES (1, 2);
+INSERT INTO `collect` VALUES (2, 1);
+INSERT INTO `collect` VALUES (3, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

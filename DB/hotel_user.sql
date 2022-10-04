@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 02/10/2022 15:41:18
+ Date: 05/10/2022 01:22:14
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,7 @@ CREATE TABLE `user_user`  (
   UNIQUE INDEX `email`(`email` ASC) USING BTREE,
   UNIQUE INDEX `tele`(`tele` ASC) USING BTREE,
   UNIQUE INDEX `qq`(`qq` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_user
@@ -43,5 +43,6 @@ INSERT INTO `user_user` VALUES (1, 'zhangsan', '123', 'zhangsan@qq.com', '789', 
 INSERT INTO `user_user` VALUES (2, 'wangwu', 'password', 'wangwu@qq.com', '666666', '888888', '男');
 INSERT INTO `user_user` VALUES (3, 'lisi', 'password', 'lisi@example.com', '456', NULL, '女');
 INSERT INTO `user_user` VALUES (6, 'lucy', 'password', 'lucy@example.com', '188888', NULL, '女');
+INSERT INTO `user_user` VALUES (31, 'Jimmy', '123456789', 'jimmy@qq.com', '123456789', '333333333', '女');
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 02/10/2022 15:41:09
+ Date: 05/10/2022 01:22:02
 */
 
 SET NAMES utf8mb4;
@@ -33,5 +33,6 @@ CREATE TABLE `point`  (
 -- ----------------------------
 INSERT INTO `point` VALUES (1, 100);
 INSERT INTO `point` VALUES (2, 0);
+INSERT INTO `point` VALUES (31, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
