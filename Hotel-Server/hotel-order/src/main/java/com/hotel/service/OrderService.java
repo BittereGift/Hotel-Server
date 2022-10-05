@@ -4,6 +4,7 @@ import com.hotel.dao.OrderDao;
 import com.hotel.domain.Order;
 import com.hotel.domain.Room;
 import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -16,9 +17,14 @@ public interface OrderService {
 
     /**
      * 新增订单
-     * @param order 订单
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @param userId 用户 id
+     * @param roomId 房间 id
+     * @return 是否成功
      */
-    boolean add(Order order);
+    Order addOrder(Date startTime, Date endTime,
+                     Integer userId, Integer roomId);
 
     /**
      * 修改订单状态

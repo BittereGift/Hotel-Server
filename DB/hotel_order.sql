@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 05/10/2022 01:20:51
+ Date: 06/10/2022 02:56:51
 */
 
 SET NAMES utf8mb4;
@@ -38,12 +38,13 @@ CREATE TABLE `order_order`  (
   `hotel_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order_order
 -- ----------------------------
-INSERT INTO `order_order` VALUES (1, '2022-10-05 00:37:07', '2022-10-08 00:37:09', 1, 'zhangsan', '789', 1, '101', 1, '大床房', 1000.00, 1, '南方科技大学酒店', '深圳市南山区桃源街道1088号', '已付款');
+INSERT INTO `order_order` VALUES (1, '2022-10-05 00:37:07', '2022-10-08 00:37:09', 1, 'zhangsan', '789', 1, '101', 1, '大床房', 1000.00, 1, '南方科技大学酒店', '深圳市南山区桃源街道1088号', '已完成');
+INSERT INTO `order_order` VALUES (9, '2022-10-31 16:00:00', '2022-11-05 16:00:00', 1, 'zhangsan', '789', 1, '101', 1, '大床房', 1000.00, 1, '南方科技大学酒店', '深圳市南山区桃源街道1088号', '未付款');
 
 -- ----------------------------
 -- Table structure for order_status_log
@@ -54,10 +55,32 @@ CREATE TABLE `order_status_log`  (
   `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `change_time` datetime NOT NULL,
   PRIMARY KEY (`order_id`, `info`, `change_time`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of order_status_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for undo_log
+-- ----------------------------
+DROP TABLE IF EXISTS `undo_log`;
+CREATE TABLE `undo_log`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `branch_id` bigint NOT NULL,
+  `xid` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `context` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `rollback_info` longblob NOT NULL,
+  `log_status` int NOT NULL,
+  `log_created` datetime NOT NULL,
+  `log_modified` datetime NOT NULL,
+  `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `ux_undo_log`(`xid` ASC, `branch_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of undo_log
 -- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

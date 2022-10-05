@@ -54,10 +54,9 @@ public interface RoomDao {
      *
      * @param id     房间 id
      * @param status 房间的状态
-     * @return 如果更改成功，则返回 1，否则返回 0
      */
     @Update("update room set status = #{status} where id = #{id}")
-    Integer updateStatus(Integer id, Integer status);
+    void updateStatus(Integer id, Integer status);
 
     /**
      * 通过 id 查询信息
@@ -77,6 +76,16 @@ public interface RoomDao {
             @Result(property = "status", column = "status"),
     })
     Room getById(Integer id);
+
+    /**
+     * 通过 id 查询信息个数
+     *
+     * @param id id
+     * @return 查询到的对象信息实例
+     */
+    @Select("select count(*) from room where id = #{id} and status = #{status}")
+    @ResultType(Integer.class)
+    Integer getCountById(Integer id, Integer status);
 
     /**
      * 查询所有对象的信息

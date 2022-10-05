@@ -2,10 +2,13 @@ package com.hotel.controller;
 
 import com.hotel.domain.Room;
 import com.hotel.domain.User;
+import com.hotel.exception.BusinessException;
+import com.hotel.exception.ExceptionEnum;
 import com.hotel.service.RoomService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -103,19 +106,13 @@ public class RoomController {
      *
      * @param id     房间 id
      * @param status 房间的状态
-     * @return 是否成功
+     * @throws BusinessException 如果房间的状态和更改状态一致，抛出异常 ROOM_ALREADY_BOOKED
      */
-    @ApiOperation(value = "updateStatus", notes = "更改房间状态", response = Boolean.class)
-    @ApiResponses({
-            @ApiResponse(code = 10031, message = ""),
-            @ApiResponse(code = 10030, message = "更新失败，请重试")
-    })
+    @ApiOperation(value = "updateStatus", notes = "更改房间状态")
     @PutMapping("/us")
-    public Result updateStatus(@RequestParam("id") Integer id, @RequestParam("status") Integer status) {
-        boolean flag = roomService.updateStatus(id, status);
-        Integer code = flag ? Code.PUT_OK : Code.PUT_FAIL;
-        String msg = flag ? "" : "房间更新失败，请重试";
-        return new Result(flag, code, msg);
+    @Transactional
+    public void updateStatus(@RequestParam("id") Integer id, @RequestParam("status") Integer status) {
+        roomService.updateStatus(id, status);
     }
 
     /**

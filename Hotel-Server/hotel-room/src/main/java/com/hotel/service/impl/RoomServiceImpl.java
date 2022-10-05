@@ -1,8 +1,13 @@
 package com.hotel.service.impl;
 
 import com.hotel.dao.RoomDao;
+import com.hotel.domain.Hotel;
 import com.hotel.domain.Room;
+import com.hotel.exception.BusinessException;
+import com.hotel.exception.ExceptionEnum;
+import com.hotel.service.HotelService;
 import com.hotel.service.RoomService;
+import com.hotel.service.overwrite.HotelServiceOverwrite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +21,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Autowired
     private RoomDao roomDao;
+
+    @Autowired
+    private HotelServiceOverwrite hotelService;
 
     @Override
     public boolean addRoom(Room room) {
@@ -43,13 +51,19 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean updateStatus(Integer id, Integer status) {
-        return roomDao.updateStatus(id, status) == 1;
+    public void updateStatus(Integer id, Integer status) {
+        if (roomDao.getCountById(id, status == 1 ? 0 : 1) == 0) {
+            throw new BusinessException(ExceptionEnum.ROOM_ALREADY_BOOKED);
+        }
+        roomDao.updateStatus(id, status);
     }
 
     @Override
     public Room getById(Integer id) {
-        return roomDao.getById(id);
+        Room room = roomDao.getById(id);
+        Hotel hotel = hotelService.getHotelById(room.getHotel().getId());
+        room.setHotel(hotel);
+        return room;
     }
 
     @Override

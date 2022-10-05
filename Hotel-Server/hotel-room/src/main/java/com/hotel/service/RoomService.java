@@ -40,9 +40,8 @@ public interface RoomService {
      * 通过 id 更改房间的状态
      * @param id 房间 id
      * @param status 房间的状态
-     * @return 是否成功
      */
-    boolean updateStatus(Integer id, Integer status);
+    void updateStatus(Integer id, Integer status);
 
     /**
      * 通过 id 查询信息

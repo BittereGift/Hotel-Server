@@ -1,9 +1,16 @@
 package com.hotel.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
 import com.hotel.dao.OrderDao;
 import com.hotel.domain.Order;
 import com.hotel.domain.Room;
+import com.hotel.domain.User;
 import com.hotel.service.OrderService;
+import com.hotel.service.RoomService;
+import com.hotel.service.UserSerivce;
+import com.hotel.util.DataUtil;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +26,26 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
+    @Autowired
+    private RoomService roomService;
+
+    @Autowired
+    private UserSerivce userSerivce;
+
     @Override
-    public boolean add(Order order) {
-        try {
-            orderDao.add(order);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    @GlobalTransactional
+    public Order addOrder(Date startTime, Date endTime, Integer userId, Integer roomId) {
+        Order order = new Order();
+        order.setStartTime(startTime);
+        order.setEndTime(endTime);
+        User user = DataUtil.getDataFromFeign(userSerivce.getUserById(userId).getData(), User.class);
+        Room room = DataUtil.getDataFromFeign(roomService.getRoomById(roomId).getData(), Room.class);
+        order.setUser(user);
+        order.setRoom(room);
+        order.setStatus("未付款");
+        orderDao.add(order);
+        roomService.updateStatus(roomId, 1);
+        return order;
     }
 
     @Override

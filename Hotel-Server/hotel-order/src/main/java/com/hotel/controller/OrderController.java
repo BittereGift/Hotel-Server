@@ -1,9 +1,7 @@
 package com.hotel.controller;
 
-import com.hotel.domain.Evaluation;
 import com.hotel.domain.Order;
 import com.hotel.domain.Room;
-import com.hotel.service.LogService;
 import com.hotel.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +9,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -31,7 +30,6 @@ public class OrderController {
     /**
      * 新增订单
      *
-     * @param order 订单
      */
     @ApiOperation(value = "addOrder", notes = "新增订单", response = Boolean.class)
     @ApiResponses({
@@ -39,11 +37,15 @@ public class OrderController {
             @ApiResponse(code = 10000, message = "订单添加失败，请重试")
     })
     @PostMapping
-    public Result addOrder(@RequestBody Order order) {
-        boolean flag = orderService.add(order);
+    public Result addOrder(@RequestParam("startTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                           @RequestParam("endTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+                           @RequestParam("userId") Integer userId,
+                           @RequestParam("roomId") Integer roomId) {
+        Order newOrder = orderService.addOrder(startTime, endTime, userId, roomId);
+        boolean flag = newOrder != null;
         Integer code = flag ? Code.POST_OK : Code.POST_FAIL;
         String msg = flag ? "" : "订单添加失败，请重试";
-        return new Result(flag, code, msg);
+        return new Result(newOrder, code, msg);
     }
 
     /**

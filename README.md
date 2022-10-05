@@ -28,6 +28,7 @@ Hotel-Server
 - `nacos` 注册中心，用于服务的注册、发现和心跳监测
 - `Ribbon` 实现负载均衡
 - `Feign` 快捷调用远程服务
+- `Seata` 分布式事务管理
 - `knife4j` 用于通过注解快速生成接口文档
 - `hutool` 用于简化数据间的处理和转换
 - `fastjson2` 用于将对象快速转换为 `json` 对象
