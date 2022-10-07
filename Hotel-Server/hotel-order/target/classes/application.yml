@@ -6,7 +6,7 @@ spring:
     name: service-order
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hotel_order?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql://localhost:3306/hotel_order?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=true
     username: root
     password: hhs123456789
     type: com.alibaba.druid.pool.DruidDataSource
@@ -14,6 +14,9 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd
 seata:
   tx-service-group: my-tx-group
   service:

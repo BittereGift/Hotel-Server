@@ -51,14 +51,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void updateStatus(Integer id, Integer status) {
-        if (roomDao.getCountById(id, status == 1 ? 0 : 1) == 0) {
-            throw new BusinessException(ExceptionEnum.ROOM_ALREADY_BOOKED);
-        }
-        roomDao.updateStatus(id, status);
-    }
-
-    @Override
     public Room getById(Integer id) {
         Room room = roomDao.getById(id);
         Hotel hotel = hotelService.getHotelById(room.getHotel().getId());

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * @author Bittere_Gift
@@ -12,10 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class Room {
+public class BookTime {
     private Integer roomId;
-    private RoomType type;
-    private String position;
-    private Hotel hotel;
-    private List<BookTime> bookTimeList;
+    private Integer orderId;
+    private Date startTime;
+    private Date endTime;
 }

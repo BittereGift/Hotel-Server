@@ -1,8 +1,7 @@
 package com.hotel.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson2.JSON;
 import com.hotel.dao.OrderDao;
+import com.hotel.domain.BookTime;
 import com.hotel.domain.Order;
 import com.hotel.domain.Room;
 import com.hotel.domain.User;
@@ -11,6 +10,7 @@ import com.hotel.service.RoomService;
 import com.hotel.service.UserSerivce;
 import com.hotel.util.DataUtil;
 import io.seata.spring.annotation.GlobalTransactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +21,7 @@ import java.util.List;
  * @author Bittere_Gift
  */
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -44,7 +45,12 @@ public class OrderServiceImpl implements OrderService {
         order.setRoom(room);
         order.setStatus("未付款");
         orderDao.add(order);
-        roomService.updateStatus(roomId, 1);
+        BookTime bookTime = new BookTime();
+        bookTime.setOrderId(order.getOrderId());
+        bookTime.setRoomId(roomId);
+        bookTime.setStartTime(startTime);
+        bookTime.setEndTime(endTime);
+        roomService.addBookTime(bookTime);
         return order;
     }
 

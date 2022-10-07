@@ -37,13 +37,6 @@ public interface RoomService {
     boolean update(Room room);
 
     /**
-     * 通过 id 更改房间的状态
-     * @param id 房间 id
-     * @param status 房间的状态
-     */
-    void updateStatus(Integer id, Integer status);
-
-    /**
      * 通过 id 查询信息
      * @param id  id
      * @return 查询到的对象信息实例

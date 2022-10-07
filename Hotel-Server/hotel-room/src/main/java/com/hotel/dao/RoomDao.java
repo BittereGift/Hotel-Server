@@ -18,7 +18,7 @@ public interface RoomDao {
      *
      * @param room 房间对象
      */
-    @Insert("insert into room values (null, #{hotel.id}, #{type.id}, #{position}, #{status})")
+    @Insert("insert into room values (null, #{hotel.id}, #{type.id}, #{position})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void add(Room room);
 
@@ -46,17 +46,9 @@ public interface RoomDao {
      * @param room 更改后的对象信息实例
      * @return 如果更改成功，则返回 1，否则返回 0
      */
-    @Update("update room set hotel_id = #{hotel.id}, type_id = #{type.id}, position = #{position}, status = #{status} where id = #{id}")
+    @Update("update room set hotel_id = #{hotel.id}, type_id = #{type.id}, " +
+            "position = #{position} where id = #{id}")
     Integer update(Room room);
-
-    /**
-     * 通过 id 更改房间的状态
-     *
-     * @param id     房间 id
-     * @param status 房间的状态
-     */
-    @Update("update room set status = #{status} where id = #{id}")
-    void updateStatus(Integer id, Integer status);
 
     /**
      * 通过 id 查询信息
@@ -73,7 +65,9 @@ public interface RoomDao {
             )),
             @Result(property = "position", column = "position"),
             @Result(property = "hotel.id", column = "hotel_id"),
-            @Result(property = "status", column = "status"),
+            @Result(property = "bookTimeList", column = "id", many = @Many(
+                    select = "com.hotel.dao.RoomBookTimeDao.getByRoomId"
+            ))
     })
     Room getById(Integer id);
 

@@ -1,14 +1,14 @@
 package com.hotel.controller;
 
 import com.hotel.domain.Room;
-import com.hotel.domain.User;
-import com.hotel.exception.BusinessException;
-import com.hotel.exception.ExceptionEnum;
+import com.hotel.service.RoomBookTimeService;
 import com.hotel.service.RoomService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +24,9 @@ public class RoomController {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private RoomBookTimeService roomBookTimeService;
 
     /**
      * 添加房间
@@ -99,20 +102,6 @@ public class RoomController {
         Integer code = flag ? Code.PUT_OK : Code.PUT_FAIL;
         String msg = flag ? "" : "房间更新失败，请重试";
         return new Result(flag, code, msg);
-    }
-
-    /**
-     * 通过 id 更改房间的状态
-     *
-     * @param id     房间 id
-     * @param status 房间的状态
-     * @throws BusinessException 如果房间的状态和更改状态一致，抛出异常 ROOM_ALREADY_BOOKED
-     */
-    @ApiOperation(value = "updateStatus", notes = "更改房间状态")
-    @PutMapping("/us")
-    @Transactional
-    public void updateStatus(@RequestParam("id") Integer id, @RequestParam("status") Integer status) {
-        roomService.updateStatus(id, status);
     }
 
     /**
