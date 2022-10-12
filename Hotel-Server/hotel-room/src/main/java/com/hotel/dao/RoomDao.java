@@ -72,16 +72,6 @@ public interface RoomDao {
     Room getById(Integer id);
 
     /**
-     * 通过 id 查询信息个数
-     *
-     * @param id id
-     * @return 查询到的对象信息实例
-     */
-    @Select("select count(*) from room where id = #{id} and status = #{status}")
-    @ResultType(Integer.class)
-    Integer getCountById(Integer id, Integer status);
-
-    /**
      * 查询所有对象的信息
      *
      * @return 所用实例的 List 集合
@@ -105,16 +95,15 @@ public interface RoomDao {
      *
      * @param hotelId  酒店 id
      * @param typeId   类型 id
-     * @param status   状态
      * @param position 房间位置
      * @return 在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间
      */
     @SelectProvider(type = RoomSqlProvider.class, method = "selectRoom")
     @ResultMap("roomMap")
-    List<Room> getByHotelAndTypeAndStatusAndPosition(Integer hotelId, Integer typeId, Integer status, String position);
+    List<Room> getByHotelAndTypeAndStatusAndPosition(Integer hotelId, Integer typeId, String position);
 
     class RoomSqlProvider {
-        public String selectRoom(Integer hotelId, Integer typeId, Integer status, String position) {
+        public String selectRoom(Integer hotelId, Integer typeId, String position) {
             return new SQL() {{
                 SELECT("*");
                 FROM("room");
@@ -123,9 +112,6 @@ public interface RoomDao {
                 }
                 if (typeId != null) {
                     WHERE("type_id = #{typeId}");
-                }
-                if (status != null) {
-                    WHERE("status = #{status}");
                 }
                 if (position != null) {
                     WHERE("position = #{position}");

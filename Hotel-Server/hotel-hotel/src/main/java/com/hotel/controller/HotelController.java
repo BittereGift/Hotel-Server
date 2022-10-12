@@ -24,9 +24,6 @@ public class HotelController {
     @Autowired
     private HotelService hotelService;
 
-    @Autowired
-    private RoomService roomService;
-
     /**
      * 添加酒店
      *
@@ -60,9 +57,6 @@ public class HotelController {
     @DeleteMapping("/{id}")
     public Result deleteHotel(@PathVariable Integer id) {
         boolean flag = hotelService.delete(id);
-        if (flag) {
-            roomService.deleteHotelRooms(id);
-        }
         Integer code = flag ? Code.DELETE_OK : Code.DELETE_FAIL;
         String msg = flag ? "" : "酒店删除失败，请重试";
         return new Result(flag, code, msg);
@@ -102,9 +96,6 @@ public class HotelController {
     public Result getHotelById(@PathVariable Integer id) {
         Hotel hotel = hotelService.getById(id);
         boolean flag = hotel != null;
-        if (flag) {
-            hotel.setRoomList((List<Room>) roomService.getRoomList(id).getData());
-        }
         Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
         String msg = flag ? "" : "酒店查询失败，请重试";
         return new Result(hotel, code, msg);

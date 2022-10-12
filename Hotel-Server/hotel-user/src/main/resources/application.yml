@@ -14,3 +14,10 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+
+seata:
+  tx-service-group: my-tx-group
+  service:
+    vgroup-mapping.my-tx-group: seata-server
+    grouplist.seata-server: 127.0.0.1:8091
+  enabled: true

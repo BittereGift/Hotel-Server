@@ -62,9 +62,8 @@ public interface RoomService {
      *
      * @param hotelId  酒店 id
      * @param typeId   类型 id
-     * @param status   状态
      * @param position 房间位置
      * @return 在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间
      */
-    List<Room> getByHotelAndTypeAndStatusAndPosition(Integer hotelId, Integer typeId, Integer status, String position);
+    List<Room> getByHotelAndTypeAndStatusAndPosition(Integer hotelId, Integer typeId, String position);
 }

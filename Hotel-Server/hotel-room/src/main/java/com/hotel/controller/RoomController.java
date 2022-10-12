@@ -166,12 +166,11 @@ public class RoomController {
      *
      * @param hotelId  酒店 id
      * @param typeId   类型 id
-     * @param status   状态
      * @param position 房间位置
      * @return 在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间
      */
     @ApiOperation(value = "getRoomsByHotelAndTypeAndStatusAndPosition",
-            notes = "查询在 hotelId 酒店中 typeId类型的 状态为 status 位置为 position 的房间，不输入条件则为不限制该条件",
+            notes = "查询在 hotelId 酒店中 typeId类型的 位置为 position 的房间，不输入条件则为不限制该条件",
             response = Room.class,
             responseContainer = "List"
     )
@@ -182,9 +181,8 @@ public class RoomController {
     @GetMapping("/s")
     public Result getRoomsByHotelAndTypeAndStatusAndPosition(@RequestParam(value = "hotelId", required = false) Integer hotelId,
                                                              @RequestParam(value = "typeId", required = false) Integer typeId,
-                                                             @RequestParam(value = "status", required = false) Integer status,
                                                              @RequestParam(value = "position", required = false) String position) {
-        List<Room> rooms = roomService.getByHotelAndTypeAndStatusAndPosition(hotelId, typeId, status, position);
+        List<Room> rooms = roomService.getByHotelAndTypeAndStatusAndPosition(hotelId, typeId, position);
         boolean flag = rooms != null && rooms.size() > 0;
         Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
         return new Result(rooms, code);

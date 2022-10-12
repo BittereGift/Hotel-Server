@@ -5,7 +5,6 @@
     <file url="file://$PROJECT_DIR$/hotel-eval/src/main/java/com/hotel/dao/EvalDao.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/hotel-hotel/src/main/java/com/hotel/dao/HotelDao.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/hotel-manager/src/main/java/com/hotel/dao/ManagerDao.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/hotel-order/src/main/java/com/hotel/dao/LogDao.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/hotel-order/src/main/java/com/hotel/dao/OrderDao.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/hotel-point/src/main/java/com/hotel/dao/PointDao.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/hotel-room/src/main/java/com/hotel/dao/RoomBookTimeDao.java" dialect="GenericSQL" />

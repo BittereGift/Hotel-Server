@@ -1,7 +1,11 @@
 package com.hotel.service.impl;
 
 import com.hotel.dao.CollectDao;
+import com.hotel.domain.Room;
+import com.hotel.domain.User;
 import com.hotel.service.CollectService;
+import com.hotel.service.RoomService;
+import com.hotel.service.UserSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,12 @@ public class CollectServiceImpl implements CollectService {
 
     @Autowired
     private CollectDao collectDao;
+
+    @Autowired
+    private RoomService roomService;
+
+    @Autowired
+    private UserSerivce userSerivce;
 
     @Override
     public boolean add(Integer userId, Integer roomId) {
@@ -32,8 +42,19 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public List<Integer> getRoomIdsByUserId(Integer userId) {
-        return collectDao.getRoomIdsByUserId(userId);
+    public boolean deleteByUserId(Integer userId) {
+        return collectDao.deleteByUserId(userId) != 1;
+    }
+
+    @Override
+    public boolean deleteByUserAndRooms(Integer userId, List<Integer> roomIds) {
+        return collectDao.deleteByUserAndRooms(userId, roomIds) != 0;
+    }
+
+    @Override
+    public List<Room> getRoomIdsByUserId(Integer userId) {
+        List<Integer> ids = collectDao.getRoomIdsByUserId(userId);
+        return (List<Room>) roomService.getRoomsByIds(ids).getData();
     }
 
     @Override
@@ -42,8 +63,9 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public List<Integer> getUserIdsByRoomId(Integer roomId) {
-        return collectDao.getUserIdsByRoomId(roomId);
+    public List<User> getUserIdsByRoomId(Integer roomId) {
+        List<Integer> ids = collectDao.getUserIdsByRoomId(roomId);
+        return (List<User>) userSerivce.getUsersByIds(ids).getData();
     }
 
     @Override

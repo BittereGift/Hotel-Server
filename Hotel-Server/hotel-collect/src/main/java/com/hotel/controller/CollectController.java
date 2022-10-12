@@ -29,12 +29,6 @@ public class CollectController {
     @Autowired
     private CollectService collectService;
 
-    @Autowired
-    private RoomService roomService;
-
-    @Autowired
-    private UserSerivce userSerivce;
-
     /**
      * 新收藏
      *
@@ -76,6 +70,30 @@ public class CollectController {
     }
 
     /**
+     * 删除某个用户的全部收藏
+     * @param userId
+     */
+    @ApiOperation(value = "deleteCollectsByUser", notes = "删除某个用户的全部收藏")
+    @DeleteMapping("/de/{userId}")
+    public void deleteCollectsByUser(@PathVariable Integer userId) {
+        collectService.deleteByUserId(userId);
+    }
+
+    @ApiOperation(value = "deleteCollectsByUserAndRooms", notes = "删除用户指定的收藏", response = Boolean.class)
+    @ApiResponses({
+            @ApiResponse(code = 10021, message = ""),
+            @ApiResponse(code = 10020, message = "收藏删除失败，请重试")
+    })
+    @DeleteMapping("/deurs")
+    public Result deleteCollectsByUserAndRooms(@RequestParam("userId") Integer userId,
+                                               @RequestParam("roomIds") List<Integer> roomIds) {
+        boolean flag = collectService.deleteByUserAndRooms(userId, roomIds);
+        Integer code = flag? Code.DELETE_OK : Code.DELETE_FAIL;
+        String msg = flag? "" : "收藏删除失败，请重试";
+        return new Result(flag, code, msg);
+    }
+
+    /**
      * 查询某一用户的所有收藏
      * @param userId 用户 id
      * @return 收藏的 roomId
@@ -88,13 +106,9 @@ public class CollectController {
     })
     @GetMapping("/u/{userId}")
     public Result getCollectsOfUser(@PathVariable Integer userId) {
-        List<Integer> ids = collectService.getRoomIdsByUserId(userId);
-        boolean flag = ids != null && ids.size() > 0;
-        List<Room> rooms = new ArrayList<>();
-        if (flag) {
-            rooms = (List<Room>) roomService.getRoomsByIds(ids).getData();
-        }
-        Integer code = rooms.size() != 0 ? Code.GET_OK : Code.GET_FAIL;
+        List<Room> rooms = collectService.getRoomIdsByUserId(userId);
+        boolean flag = rooms != null && rooms.size() > 0;
+        Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
         return new Result(rooms, code);
     }
 
@@ -127,13 +141,9 @@ public class CollectController {
     })
     @GetMapping("/r/{roomId}")
     public Result getCollectsOfRoom(@PathVariable Integer roomId) {
-        List<Integer> ids = collectService.getUserIdsByRoomId(roomId);
-        boolean flag = ids != null && ids.size() > 0;
-        List<User> users = new ArrayList<>();
-        if (flag) {
-            users = (List<User>) userSerivce.getUsersByIds(ids).getData();
-        }
-        Integer code = users.size() != 0 ? Code.GET_OK : Code.GET_FAIL;
+        List<User> users = collectService.getUserIdsByRoomId(roomId);
+        boolean flag = users != null && users.size() > 0;
+        Integer code = flag ? Code.GET_OK : Code.GET_FAIL;
         return new Result(users, code);
     }
 

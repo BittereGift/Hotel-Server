@@ -14,3 +14,6 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd

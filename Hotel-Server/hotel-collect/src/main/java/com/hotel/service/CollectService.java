@@ -1,5 +1,11 @@
 package com.hotel.service;
 
+import com.hotel.dao.CollectDao;
+import com.hotel.domain.Room;
+import com.hotel.domain.User;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.DeleteProvider;
+
 import java.util.List;
 
 /**
@@ -24,11 +30,26 @@ public interface CollectService {
     boolean delete(Integer userId, Integer roomId);
 
     /**
+     * 删除某个用户的全部收藏
+     * @param userId 用户 id
+     * @return 移除条数
+     */
+    boolean deleteByUserId(Integer userId);
+
+    /**
+     * 删除某个用户的部分收藏
+     * @param userId 用户 id
+     * @param roomIds 房间 id
+     * @return 删除条数
+     */
+    boolean deleteByUserAndRooms(Integer userId, List<Integer> roomIds);
+
+    /**
      * 查询某一用户的所有收藏
      * @param userId 用户 id
      * @return 收藏的 roomId
      */
-    List<Integer> getRoomIdsByUserId(Integer userId);
+    List<Room> getRoomIdsByUserId(Integer userId);
 
     /**
      * 查询某一用户的收藏量
@@ -42,7 +63,7 @@ public interface CollectService {
      * @param roomId 房间 id
      * @return 客户 id
      */
-    List<Integer> getUserIdsByRoomId(Integer roomId);
+    List<User> getUserIdsByRoomId(Integer roomId);
 
     /**
      * 查询某个房间的被收藏量

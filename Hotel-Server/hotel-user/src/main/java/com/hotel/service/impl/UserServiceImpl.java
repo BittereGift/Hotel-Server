@@ -2,7 +2,10 @@ package com.hotel.service.impl;
 
 import com.hotel.dao.UserDao;
 import com.hotel.domain.User;
+import com.hotel.service.CollectService;
+import com.hotel.service.PointService;
 import com.hotel.service.UserService;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,21 +22,28 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private PointService pointService;
+
+    @Autowired
+    private CollectService collectService;
+
     @Override
+    @GlobalTransactional
     public boolean addUser(User user) {
         log.info("User adding: {}", user);
-        try {
-            userDao.add(user);
-        } catch (Exception e) {
-            return false;
-        }
+        userDao.add(user);
+        pointService.addUser(user.getId(), null);
         return true;
     }
 
     @Override
+    @GlobalTransactional
     public boolean deleteUserById(Integer id) {
         log.info("User deleting: id = {}", id);
         Integer code = userDao.deleteById(id);
+        pointService.deleteUser(id);
+        collectService.deleteCollectsByUser(id);
         return code == 1;
     }
 
@@ -45,9 +55,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @GlobalTransactional
     public User getById(Integer id) {
         log.info("User getting: id = {}", id);
-        return userDao.getById(id);
+        User user = userDao.getById(id);
+        user.setPoint((Integer) pointService.getPoint(id).getData());
+        return user;
     }
 
     @Override
